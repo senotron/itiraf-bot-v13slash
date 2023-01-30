@@ -1,0 +1,5 @@
+{
+    "mongoDB":"mongodb+srv://mrsn:mrsnbot7992@cluster0.hcyybzn.mongodb.net/?retryWrites=true&w=majority",
+  "cooldown_süresi":5
+
+}
