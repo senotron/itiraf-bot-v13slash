@@ -27,7 +27,7 @@ let api = `https://dynamic.brandcrowd.com/asset/logo/7f0254b2-49ae-4819-9107-477
   const embeds = new MessageEmbed()
   .setColor("BLUE")
   .setImage(apis)    
-      let apis1 = `https://habbofont.net/font/reception/${yazı}.gif`
+      let apis1 = `https://flamingtext.com/net-fu/proxy_form.cgi?script=adidas-logo&fontname=ethnocentric&text=${yazı}&script=adidas-logo&text=Discord&fontname=ethnocentric&fillTextColor=%236d81e7&fillOutlineColor=%23fbfaf9&shadowType=0&backgroundRadio=0&imageoutput=true`
   const embeds1 = new MessageEmbed()
   .setColor("BLUE")
   .setImage(apis1)
