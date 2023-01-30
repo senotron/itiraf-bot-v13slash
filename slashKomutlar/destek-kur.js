@@ -1,5 +1,4 @@
 const { MessageEmbed,Client,CommandInteraction,MessageActionRow,MessageButton,Permissions } = require("discord.js");
-const { openticket } = require("../ayarlar.json");
 const db = require("../models/ticketSetup")
 module.exports = {
     name:"destek-kur",

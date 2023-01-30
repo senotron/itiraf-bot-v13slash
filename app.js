@@ -7,7 +7,8 @@ const db = require("./models/ticket")
 const {createTranscript} = require("discord-html-transcripts");
 const { joinVoiceChannel } = require('@discordjs/voice'); 
 const d2b = require("croxydb") 
-
+const dotenv = require("dotenv")
+dotenv.config({ path: "./.env" })
 const client = new Client({
   fetchAllMembers: true,
   intents:[
@@ -21,13 +22,12 @@ const client = new Client({
 
     
   ]});
-const {token,mongoDB} = require("./ayarlar.json");
 
 //const dotenv = require("dotenv")
 //dotenv.config({ path: "./.env" })
 
 const mongoose = require("mongoose");
-mongoose.connect(mongoDB)
+mongoose.connect(process.env.mongoDB)
 .then(() => console.log('MongoDB connected!'))
 .catch(err => console.log(err))
 
