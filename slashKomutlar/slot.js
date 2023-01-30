@@ -27,10 +27,13 @@ let api = `https://dynamic.brandcrowd.com/asset/logo/7f0254b2-49ae-4819-9107-477
   const embeds = new MessageEmbed()
   .setColor("BLUE")
   .setImage(apis)    
+      let apis1 = `https://habbofont.net/font/reception/${yazı}.gif`
+  const embeds1 = new MessageEmbed()
+  .setColor("BLUE")
+  .setImage(apis1)
   
   
-  
-            interaction.reply({embeds:[embed,embeds]});
+            interaction.reply({embeds:[embed,embeds,embeds1]});
 
     
     
