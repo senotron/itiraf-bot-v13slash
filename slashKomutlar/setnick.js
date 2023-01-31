@@ -1,6 +1,8 @@
+const { MessageEmbed, Client, CommandInteraction } = require("discord.js");
+
 module.exports = {
     name:"setnick",
-    description: 'setnick',
+    description: 'Belirttiğiniz kullanıcının kullanıcı adını değiştirir.',
     type:1,
     options: [
         {
@@ -22,10 +24,16 @@ module.exports = {
     const isim = interaction.options.getString('isim')
     const uye =  interaction.options.getUser('user');
     let nick = uye.displayName;
-
- uye.setNickname(isim);
-
-    interaction.reply(`${uye} Kullanıcısının ismi  ${isim} olarak değiştirildi!`)
+    interaction.guild.members.cache.get(uye.id).setNickname(isim);
+    
+ interaction.reply(
+    new MessageEmbed()
+      .setColor("#00ff00")
+      .setTitle("İsim Değiştirildi!")
+      .addField("İsmi Değiştirilen", `${uye.username}`)
+      .addField("Yeni İsmi", `${isim}`)
+      .setFooter("İsim Başarıyla Değiştirildi")
+  );
 
      
 
