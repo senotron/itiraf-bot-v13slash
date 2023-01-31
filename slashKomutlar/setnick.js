@@ -25,15 +25,7 @@ module.exports = {
     const uye =  interaction.options.getUser('user');
     let nick = uye.displayName;
     interaction.guild.members.cache.get(uye.id).setNickname(isim);
-    
- interaction.reply(
-    new MessageEmbed()
-      .setColor("#00ff00")
-      .setTitle("İsim Değiştirildi!")
-      .addField("İsmi Değiştirilen", `${uye.username}`)
-      .addField("Yeni İsmi", `${isim}`)
-      .setFooter("İsim Başarıyla Değiştirildi")
-  );
+    interaction.reply(`${uye} Kullanıcısının ismi  ${isim} olarak değiştirildi!`)
 
      
 

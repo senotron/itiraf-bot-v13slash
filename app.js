@@ -343,12 +343,36 @@ client.on("messageCreate", async message => {
 })
 //Şikayet son
 
-//eklendim-atıldım baş
-
-//eklendim-atıldım son
 
 //Afk baş
+const ms = require("ms");
+client.on("messageCreate" ,async message => {
+    if(!message.guild) return;
+   if (message.content.includes(`afk`)) return;
+    let etiket = message.mentions.users.first()
+    let uye = d2b.fetch(`afk_${message.author.id}`)
+    let nickk = d2b.fetch(`nick_${message.author.id}_${message.guild.id}`)
+if (await d2b.get(`afk_${message.author.id}`)) {
 
+    d2b.delete(`afk_${message.author.id}`);
+      message.member.setNickname(nickk)
+
+    message.reply("Afk Modundan Başarıyla Çıkış Yaptın!");
+  }
+    
+  var kullanıcı = message.mentions.users.first();
+  if (!kullanıcı) return;
+
+  var sebep = await d2b.get(`afk_${kullanıcı.id}`);
+      var time = await d2b.fetch(`afktime_${message.guild.id}`);
+      var timeObj = await ms(Date.now() - time);
+  if (sebep) {
+    message.reply("Etiketlediğin Kullanıcı `"+sebep+"` Sebebiyle `"+timeObj+"` Afk Modunda!");
+  }
+
+  
+
+});
 //Afk son
 
 // Oto Tag Baş
