@@ -23,7 +23,7 @@ module.exports = {
     const uye =  interaction.options.getUser('user');
     let nick = uye.displayName;
 
- interaction.member.setNickname(isim);
+ uye.setNickname(isim);
 
     interaction.reply(`${uye} Kullanıcısının ismi  ${isim} olarak değiştirildi!`)
 

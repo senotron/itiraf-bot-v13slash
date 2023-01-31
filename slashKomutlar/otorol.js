@@ -6,7 +6,7 @@ module.exports = {
     options: [
         {
             name:"rol",
-            description:"Lütfen bir rol etiketle!",
+            description:"Lütfen bir rol etiketle!(Kapatmak için everyone seçin)",
             type:8,
             required:true
         },
