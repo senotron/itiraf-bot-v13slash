@@ -86,7 +86,7 @@ const row = new MessageActionRow()
                 
       client.users.cache.get(user.id).send(`**${guild}** sunucusundan **${sebep}** sebebiyle banlandın`)
       user.ban({reason: sebep});
-      await interaction.edit({embeds:[
+      await interaction.reply({embeds:[
           {
             title:`Üye banlandı `,
             description:`<@!${user.id}> isimli kullanıcı yasaklandı ve dm'den bilgi gönderildi`
