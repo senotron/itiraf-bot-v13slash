@@ -116,7 +116,7 @@ module.exports = async (client, interaction, button) => {
       if (interaction.isButton()){
 
       const {guild, member, customId, channel} = interaction;
-      const {butonrol1,buton1isim} = require("config.json");
+      const {butonrol1,buton1isim} = require("./config.json");
 
 
       if(customId == "1buton"){
