@@ -411,4 +411,15 @@ message.reply(` Aleykümselam, Hoşgeldin ☺️`)
 
 //Oto yanıt
 
+client.on("messageCreate", (message) => {
+  const {butonrol1,buton1isim,embedaçıklama1,embedaçıklama,emoji,emoji1} = require("config.json");
 
+
+  let selaamlar = message.content.toLowerCase()  
+if(selaamlar === 'kayıt' ){
+
+message.reply(` Aleykümselam, Hoşgeldin ☺️`)
+  
+}
+}
+)

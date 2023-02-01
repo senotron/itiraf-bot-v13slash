@@ -113,7 +113,34 @@ module.exports = async (client, interaction, button) => {
 }} 
   
   
-  
+      if (interaction.isButton()){
+
+      const {guild, member, customId, channel} = interaction;
+      const {butonrol1,buton1isim} = require("config.json");
+
+
+      if(customId == "1buton"){
+
+       const role = interaction.guild.roles.cache.get(butonrol1)
+       const memberRole = interaction.member.roles;
+       
+       const hasRole = memberRole.cache.has(butonrol1);
+
+       if(hasRole){
+         interaction.reply({content:`Zaten kayıtlısın`, ephemeral:true})
+       }else {
+        memberRole.add(butonrol1);
+        interaction.reply({content:`Başarıyla sunucumuza kayıt oldun`, ephemeral:true})
+       }
+     }
+          
+              
+          
+          
+          
+          
+      
+};
   
   
   
