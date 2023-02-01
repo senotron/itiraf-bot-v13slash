@@ -112,11 +112,11 @@ module.exports = async (client, interaction, button) => {
         await  interaction.reply({embeds:[new MessageEmbed().setTitle("Yakında").setColor("GREEN").setDescription(`Çok kısa zamanda👑✌`)],ephemeral:true})        
 }} 
   
-  
-      if (interaction.isButton()){
+    
+        if (interaction.isButton()){
 
       const {guild, member, customId, channel} = interaction;
-      const {butonrol1,buton1isim} = require("./config.json");
+      const {butonrol1,buton1isim,butonrol2,buton2isim} = require("../psychoconf/config.json");
 
 
       if(customId == "1buton"){
@@ -127,21 +127,34 @@ module.exports = async (client, interaction, button) => {
        const hasRole = memberRole.cache.has(butonrol1);
 
        if(hasRole){
-         interaction.reply({content:`Zaten kayıtlısın`, ephemeral:true})
+         memberRole.remove(butonrol1);
+         interaction.reply({content:`**${role}** rolü senden alındı`, ephemeral:true})
        }else {
         memberRole.add(butonrol1);
-        interaction.reply({content:`Başarıyla sunucumuza kayıt oldun`, ephemeral:true})
+        interaction.reply({content:`**${role}** rolü verildi`, ephemeral:true})
        }
      }
           
-              
+                if(customId == "2buton"){
+
+       const role = interaction.guild.roles.cache.get(butonrol2)
+       const memberRole = interaction.member.roles;
+       
+       const hasRole = memberRole.cache.has(butonrol2);
+
+       if(hasRole){
+         memberRole.remove(butonrol2);
+         interaction.reply({content:`**${role}** rolü senden alındı`, ephemeral:true})
+       }else {
+        memberRole.add(butonrol2);
+        interaction.reply({content:`**${role}** rolü verildi`, ephemeral:true})
+       }
+     }
           
           
           
           
-      
-};
-  
+      }
   
   
   
