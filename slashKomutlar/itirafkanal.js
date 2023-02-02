@@ -1,7 +1,7 @@
 const {Client, CommandInteraction, MessageEmbed, Permissions} = require("discord.js");
 const model = require("../models/guild");
 module.exports = {
-    name:"itiraf-kanal",
+    name:"itiraf",
     description:"İtiraf Ayarları",
     type:1,
     options:[
@@ -16,13 +16,13 @@ module.exports = {
       }]
     },
         {
-            name:"ayarla",
+            name:"kanal-ayarla",
             description:"Ayarlama İşlemleri",
             type:1,
             options:[{name:"itiraf_kanalı",description:"İtiraf kanalını ayarlar",type:7,required:true,channel_types:[0]}]            
         },
         {
-            name:"sıfırla",
+            name:"kanal-sıfırla",
             description:"İtiraf kanalını sıfırlar",
             type:1            
         }
@@ -49,7 +49,7 @@ module.exports = {
         if(durum === "aktif"){
 
           await model.updateOne({GuildID:guild.id},{itiraf:true},{upsert:true});
-          interaction.reply({ embeds:[new MessageEmbed().setTitle("Not Sistemi Aktif<:aktif:1026089040522518548>").setColor("GREEN").setDescription(`İtiraf Sistemi Yönetici Tarafından aktif edildi.Artık üyeler kimlikleri açığa çıkmadan kolayca kendi maceralarını ve itiraflarını güvenilir şekilde yapacaklar. \r\n *İtiraflar yalnız sunucu adminlerine gözükür
+          interaction.reply({ embeds:[new MessageEmbed().setTitle("İtiraf Sistemi Aktif<:aktif:1026089040522518548>").setColor("GREEN").setDescription(`İtiraf Sistemi Yönetici Tarafından aktif edildi.Artık üyeler kimlikleri açığa çıkmadan kolayca kendi maceralarını ve itiraflarını güvenilir şekilde yapacaklar. \r\n *İtiraflar yalnız sunucu adminlerine gözükür
 `)] });
         }else if(durum === "pasif"){
           await model.updateOne({GuildID:guild.id},{itiraf:false},{upsert:true});
@@ -57,18 +57,18 @@ module.exports = {
         }
         break;
       }      
-            case "ayarla":{
+            case "kanal-ayarla":{
           let {itiraf} = await model.findOne({GuildID:guild.id});
         if(!itiraf) return interaction.reply({content: `İtiraf Sistemi Aktif Değil.`, ephemeral: true});
                 let itiraf_kanalı = interaction.options.getChannel("itiraf_kanalı");
-                await model.updateOne({GuildID: interaction.guild.id},{itirafadminChannel: itiraf_kanalı.id},{upsert:true});
+                await model.updateOne({GuildID: interaction.guild.id},{itirafChannel: itiraf_kanalı.id},{upsert:true});
                 interaction.reply({embeds:[new MessageEmbed().setTitle("İtiraf Kanalı Ayarlandı!").setColor("GREEN").setDescription(`İtiraf kanalı ayarlandı! İtiraf kanalınız: <#${itiraf_kanalı.id}>`)]});
                 break;
             }
-            case "sıfırla":{
+            case "kanal-sıfırla":{
                         let {itiraf} = await model.findOne({GuildID:guild.id});
         if(!itiraf) return interaction.reply({content: `İtiraf Sistemi Aktif Değil.`, ephemeral: true});
-                await model.updateOne({GuildID: interaction.guild.id},{itirafadminChannel: null},{upsert:true});
+                await model.updateOne({GuildID: interaction.guild.id},{itirafChannel: null},{upsert:true});
                 interaction.reply({embeds:[new MessageEmbed().setTitle("İtiraf Kanalı Sıfırlandı!").setColor("RED").setDescription(`İtiraf kanalı kapatıldı! Artık sunucunuzda itirafların gideceği kanalı yok!`)]});
                 break;
             }
