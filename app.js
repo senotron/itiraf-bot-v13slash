@@ -2,10 +2,6 @@ const fs = require("fs");
 const {Client, Intents, MessageActionRow,MessageButton,MessageEmbed,Collection, ModalBuilder, TextInputBuilder, TextInputStyle, InteractionType} = require("discord.js");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
-
-const {createTranscript} = require("discord-html-transcripts");
-const { joinVoiceChannel } = require('@discordjs/voice'); 
-const d2b = require("croxydb") 
 const dotenv = require("dotenv")
 dotenv.config({ path: "./.env" })
 const client = new Client({
@@ -27,18 +23,18 @@ const client = new Client({
 
 const mongoose = require("mongoose");
 mongoose.connect(process.env.mongoDB)
-.then(() => console.log('MongoDB connected!'))
+.then(() => console.log('MongoDB bağlandı!'))
 .catch(err => console.log(err))
 
 
 global.client = client;
 client.commands = (global.commands = []);
-fs.readdir("./slashKomutlar/", (err, files) => {
+fs.readdir("./letKomutlar/", (err, files) => {
     if (err) throw err;
 
     files.forEach((file) => {
         if (!file.endsWith(".js")) return;
-        let props = require(`./slashKomutlar/${file}`);
+        let props = require(`./letKomutlar/${file}`);
 
         client.commands.push({
              name: props.name.toLowerCase(),
@@ -48,7 +44,7 @@ fs.readdir("./slashKomutlar/", (err, files) => {
           
              
         })
-        console.log(`👌 Slash Komut Yüklendi: ${props.name}`);
+        console.log(`Komut Yüklendi: ${props.name}`);
     });
 })
 ;
@@ -58,7 +54,7 @@ fs.readdir("./events/", (_err, files) => {
         const event = require(`./events/${file}`);
         let eventName = file.split(".")[0];
         
-        console.log(`👌 Event yüklendi: ${eventName}`);
+        console.log(`Event yüklendi: ${eventName}`);
         client.on(eventName, (...args) => {
            event(client, ...args);
         });
