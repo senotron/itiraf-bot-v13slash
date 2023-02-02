@@ -1,15 +1,15 @@
 const {Client, CommandInteraction, MessageEmbed, Permissions} = require("discord.js");
 const model = require("../models/guild");
 module.exports = {
-    name:"mod-log",
-    description:"Mod Log Ayarları",
+    name:"itiraf-kanal",
+    description:"İtiraf Ayarları",
     type:1,
     options:[
         {
             name:"ayarla",
             description:"Ayarlama İşlemleri",
             type:1,
-            options:[{name:"log_kanalı",description:"Mod-Log kanalını ayarlar",type:7,required:true,channel_types:[0]}]            
+            options:[{name:"itiraf_kanalı",description:"Mod-Log kanalını ayarlar",type:7,required:true,channel_types:[0]}]            
         },
         {
             name:"sıfırla",
@@ -33,9 +33,9 @@ module.exports = {
        // interaction.deferReply();
         switch(SubCmd){
             case "ayarla":{
-                let log_kanalı = interaction.options.getChannel("log_kanalı");
-                await model.updateOne({GuildID: interaction.guild.id},{modlogChannel: log_kanalı.id},{upsert:true});
-                interaction.reply({embeds:[new MessageEmbed().setTitle("Mod-Log Kanalı Ayarlandı!").setColor("GREEN").setDescription(`Mod-Log sistemi ayarlandı! Mod-Log kanalınız: <#${log_kanalı.id}>`)]});
+                let itiraf_kanalı = interaction.options.getChannel("itiraf_kanalı");
+                await model.updateOne({GuildID: interaction.guild.id},{modlogChannel: itiraf_kanalı.id},{upsert:true});
+                interaction.reply({embeds:[new MessageEmbed().setTitle("Mod-Log Kanalı Ayarlandı!").setColor("GREEN").setDescription(`İtiraf sistemi ayarlandı! İtiraf kanalınız: <#${itiraf_kanalı.id}>`)]});
                 break;
             }
             case "sıfırla":{
