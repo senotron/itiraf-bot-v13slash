@@ -44,7 +44,19 @@ module.exports = {
         let SubCmd = interaction.options.getSubcommand();
        // interaction.deferReply();
         switch(SubCmd){
-            
+           case "durum":{
+        const durum = interaction.options.get("sistem-durumu").value;
+        if(durum === "aktif"){
+
+          await model.updateOne({GuildID:guild.id},{itiraf:true},{upsert:true});
+          interaction.reply({ embeds:[new MessageEmbed().setTitle("Not Sistemi Aktif<:aktif:1026089040522518548>").setColor("GREEN").setDescription(`İtiraf Sistemi Yönetici Tarafından aktif edildi.Artık üyeler kimlikleri açığa çıkmadan kolayca kendi maceralarını ve itiraflarını güvenilir şekilde yapacaklar. \r\n *İtiraflar yalnız sunucu adminlerine gözükür
+`)] });
+        }else if(durum === "pasif"){
+          await model.updateOne({GuildID:guild.id},{itiraf:false},{upsert:true});
+          interaction.reply({ embeds:[new MessageEmbed().setTitle("İtiraf Sistemi Pasif<:pasif:1026089042208628836>").setColor("RED").setDescription(`İtiraf Sistemi Yönetici Tarafından devre dışı bırakıldı.`)] });
+        }
+        break;
+      }      
             case "ayarla":{
           let {itiraf} = await model.findOne({GuildID:guild.id});
         if(!itiraf) return interaction.reply({content: `İtiraf Sistemi Aktif Değil.`, ephemeral: true});

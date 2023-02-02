@@ -18,7 +18,7 @@ module.exports = {
  run: async (client, interaction) => {  
 
   const itiraf = interaction.options.getString("itiraf");
-//--------------İtiraf kanalına mesaj gönderme
+
         const { itirafChannel } = await model.findOne({ GuildID: interaction.guild.id }) || { itirafChannel: null };
         if (!itirafChannel) return;
       

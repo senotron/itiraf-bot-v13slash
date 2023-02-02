@@ -2,8 +2,7 @@ const fs = require("fs");
 const {Client, Intents, MessageActionRow,MessageButton,MessageEmbed,Collection, ModalBuilder, TextInputBuilder, TextInputStyle, InteractionType} = require("discord.js");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
-const TicketSetupData = require("./models/ticketSetup")
-const db = require("./models/ticket")
+
 const {createTranscript} = require("discord-html-transcripts");
 const { joinVoiceChannel } = require('@discordjs/voice'); 
 const d2b = require("croxydb") 
