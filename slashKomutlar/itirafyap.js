@@ -1,5 +1,5 @@
-const ms = require("ms")
-
+const {Client, CommandInteraction, MessageEmbed, Permissions} = require("discord.js");
+const model = require("../models/guild");
 module.exports = {
   slash: true,
   enable: true,
@@ -7,22 +7,37 @@ module.exports = {
   description: 'İtiraf yaparsın',
   options: [
 
-          { //option 3
-          name: "itiraf", //option ismi
-          description: "Timeout sebebi", //option açıklaması
-          type: 3, //option type (Type türleri için: https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type)
-          required: false //optionu doldurmak zorunlu ise true değilse false girin (false yerine bu satırı silebilirsinizde.)
+          { 
+          name: "itiraf",
+          description: "İtiraf yaz", 
+          type: 3, 
+          required: true
       }
     
   ],
- run: async (client, interaction) => {  //her slash commandda burası aynı olmak zorunda
-  const member = interaction.options.getMember("member");
-  const time = interaction.options.getString("time");
-  const sebep = interaction.options.getString("sebep");
+ run: async (client, interaction) => {  
 
-  if(!interaction.member.permissions.has("MuteMembers")) return interaction.reply("Bu işlem için üyeleri mutele yetkisine ihtiyacın var!");
+  const itiraf = interaction.options.getString("itiraf");
+//--------------İtiraf kanalına mesaj gönderme
+        const { itirafChannel } = await model.findOne({ GuildID: interaction.guild.id }) || { itirafChannel: null };
+        if (!itirafChannel) return;
+      
+        const channel = interaction.guild.channels.cache.get(itirafChannel);
+        try{
+          channel.send({
+            embeds: [new MessageEmbed()
+              .setAuthor({name:interaction.user.tag,iconURL: interaction.user.avatarURL()})
+              .setDescription(`Hey millet!Yeni bir itiraf geldi! \r\n ---------- \r\n Ama itirafın sahibinin kim olduğunu size söyleyemem.\r\n ---------- \r\n İşte gizli kişinin yaptığı itiraf; \r\n || ${itiraf} ||`)
+              .setColor("#2ACAEA")
+              .setFooter({text:`${interaction.guild.name}`})
+              .setTimestamp()
+            ]
+          })
+        }
+        catch{
+      
+        }
+   //--------------İtiraf kanalına mesaj gönderme
 
-  if (member.isCommunicationDisabled()) member.timeout(null), interaction.reply(`${member.user.tag}, adlı kullanıcının zaman aşımı kaldırıldı.`);
-  else member.timeout(time ? ms(time) : ms("12h")), interaction.reply(`**<@!${member.user.id}>** adlı kullanıcı timeout yedi! \r\n Sebep: **${sebep}** \r\n Süre: **${time}**`);
 },
 };
