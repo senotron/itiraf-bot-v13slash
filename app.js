@@ -28,12 +28,12 @@ mongoose
 global.client = client;
 client.commands = (global.commands = []);
 
-fs.readdir("./letCommands/", (err, files) => {
+fs.readdir("./letKomutlar/", (err, files) => {
   if (err) throw err;
 
   files.forEach((file) => {
     if (!file.endsWith(".js")) return;
-    const props = require(`./letCommands/${file}`);
+    const props = require(`./letKomutlar/${file}`);
 
     client.commands.push({
       name: props.name.toLowerCase(),
