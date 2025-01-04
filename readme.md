@@ -1,20 +1,20 @@
-# Discord İtiraf
+# Discord Confession
 
-- [Discord İtiraf](https://github.com/senotron/discord-confession)
-  - Altyapı tamamen senotron kullanıcısına, yani bana mahsustur.
-  - [İletişim](#i̇letişim)
+- [Discord Confession](https://github.com/senotron/discord-confession)
+  - The infrastructure is entirely created by senotron, which means it belongs to me.
+  - [Contact](#contact)
 
-## İletişim
-- [Discord Profilim](https://discord.com/users/840158550495723530)
-- [Site](https://senotron.vercel.app)
+## Contact
+- [My Discord Profile](https://discord.com/users/840158550495723530)
+- [Website](https://senotron.vercel.app)
 
-## Kurulum
-1. Eğer `.env` dosyası gözükmüyorsa bir `.env` dosyası oluşturun.
-2. İçerisine aşağıdaki değerleri ekleyin:
-   - **Token**: Discord botunuzun token değerini ekleyin.
-   - **MongoDB**: Veritabanı bağlantı URI'nizi ekleyin.
+## Setup
+1. If the `.env` file is not visible, create a new `.env` file.
+2. Add the following values inside it:
+   - **Token**: Add your Discord bot's token.
+   - **MongoDB**: Add your database connection URI.
 
-![Örnek Görsel](https://media.discordapp.net/attachments/1070771762326929520/1070774915453681674/image.png?width=517&height=82)
+![Example Image](https://media.discordapp.net/attachments/1070771762326929520/1070774915453681674/image.png?width=517&height=82)
 
 ---
 
