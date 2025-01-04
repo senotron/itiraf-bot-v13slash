@@ -1,79 +1,160 @@
-const {Client, CommandInteraction, MessageEmbed, Permissions} = require("discord.js");
+const { Client, CommandInteraction, MessageEmbed, Permissions } = require("discord.js");
 const model = require("../models/guild");
+
 module.exports = {
-    name:"itiraf",
-    description:"İtiraf Ayarları",
-    type:1,
-    options:[
-      {
-      type: 1,
-      name: "durum",
-      description: "Sistemin Aktif/Pasif Durumunu Ayarlar",
-      options:[{
-        name:"sistem-durumu", required:true,
-        description: "Sistem Durunu ayarlarsınız",type:3,
-        choices:[{name:"Aktif",value:"aktif"},{name:"Pasif",value:"pasif"}]
-      }]
-    },
+    name: "confession",
+    description: "Confession Settings",
+    type: 1,
+    options: [
         {
-            name:"kanal-ayarla",
-            description:"Ayarlama İşlemleri",
-            type:1,
-            options:[{name:"itiraf_kanalı",description:"İtiraf kanalını ayarlar",type:7,required:true,channel_types:[0]}]            
+            type: 1,
+            name: "status",
+            description: "Set the system to Active/Inactive",
+            options: [
+                {
+                    name: "system-status",
+                    required: true,
+                    description: "Set the system status",
+                    type: 3,
+                    choices: [
+                        { name: "Active", value: "active" },
+                        { name: "Inactive", value: "inactive" }
+                    ]
+                }
+            ]
         },
         {
-            name:"kanal-sıfırla",
-            description:"İtiraf kanalını sıfırlar",
-            type:1            
+            name: "set-channel",
+            description: "Set confession channel",
+            type: 1,
+            options: [
+                {
+                    name: "confession_channel",
+                    description: "Set the confession channel",
+                    type: 7,
+                    required: true,
+                    channel_types: [0]
+                }
+            ]
+        },
+        {
+            name: "reset-channel",
+            description: "Reset confession channel",
+            type: 1
         }
     ],
     /**
-     * 
-     * @param {Client} client 
-     * @param {CommandInteraction} interaction 
+     * @param {Client} client
+     * @param {CommandInteraction} interaction
      */
     run: async (client, interaction) => {
-         const guild = interaction.guild;
+        const guild = interaction.guild;
 
-        if(!interaction.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR))
-        {
-         // interaction.deferReply();
-          interaction.reply({content:"Bu komutu kullanabilmek için `Yönetici` yetkisine sahip olmalısın!",ephemeral:true});
-          return;
+        // Check for Administrator permissions
+        if (!interaction.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
+            interaction.reply({
+                content: "You must have `Administrator` permissions to use this command!",
+                ephemeral: true
+            });
+            return;
         }
-        let SubCmd = interaction.options.getSubcommand();
-       // interaction.deferReply();
-        switch(SubCmd){
-           case "durum":{
-        const durum = interaction.options.get("sistem-durumu").value;
-        if(durum === "aktif"){
 
-          await model.updateOne({GuildID:guild.id},{itiraf:true},{upsert:true});
-          interaction.reply({ embeds:[new MessageEmbed().setTitle("İtiraf Sistemi Aktif<:aktif:1026089040522518548>").setColor("GREEN").setDescription(`İtiraf Sistemi Yönetici Tarafından aktif edildi.Artık üyeler kimlikleri açığa çıkmadan kolayca kendi maceralarını ve itiraflarını güvenilir şekilde yapacaklar. \r\n *İtiraflar yalnız sunucu adminlerine gözükür
-`)] });
-        }else if(durum === "pasif"){
-          await model.updateOne({GuildID:guild.id},{itiraf:false},{upsert:true});
-          interaction.reply({ embeds:[new MessageEmbed().setTitle("İtiraf Sistemi Pasif<:pasif:1026089042208628836>").setColor("RED").setDescription(`İtiraf Sistemi Yönetici Tarafından devre dışı bırakıldı.`)] });
-        }
-        break;
-      }      
-            case "kanal-ayarla":{
-          let {itiraf} = await model.findOne({GuildID:guild.id});
-        if(!itiraf) return interaction.reply({content: `İtiraf Sistemi Aktif Değil.`, ephemeral: true});
-                let itiraf_kanalı = interaction.options.getChannel("itiraf_kanalı");
-                await model.updateOne({GuildID: interaction.guild.id},{itirafChannel: itiraf_kanalı.id},{upsert:true});
-                interaction.reply({embeds:[new MessageEmbed().setTitle("İtiraf Kanalı Ayarlandı!").setColor("GREEN").setDescription(`İtiraf kanalı ayarlandı! İtiraf kanalınız: <#${itiraf_kanalı.id}>`)]});
+        const subCommand = interaction.options.getSubcommand();
+
+        switch (subCommand) {
+            case "status": {
+                const status = interaction.options.get("system-status").value;
+
+                if (status === "active") {
+                    await model.updateOne(
+                        { GuildID: guild.id },
+                        { confessionSystem: true },
+                        { upsert: true }
+                    );
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setTitle("Confession System Activated <:active:1026089040522518548>")
+                                .setColor("GREEN")
+                                .setDescription(
+                                    "The Confession System has been activated by an admin. Members can now share their confessions anonymously and securely.\n*Confessions will only be visible to server admins."
+                                )
+                        ]
+                    });
+                } else if (status === "inactive") {
+                    await model.updateOne(
+                        { GuildID: guild.id },
+                        { confessionSystem: false },
+                        { upsert: true }
+                    );
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setTitle("Confession System Deactivated <:inactive:1026089042208628836>")
+                                .setColor("RED")
+                                .setDescription(
+                                    "The Confession System has been deactivated by an admin."
+                                )
+                        ]
+                    });
+                }
                 break;
             }
-            case "kanal-sıfırla":{
-                        let {itiraf} = await model.findOne({GuildID:guild.id});
-        if(!itiraf) return interaction.reply({content: `İtiraf Sistemi Aktif Değil.`, ephemeral: true});
-                await model.updateOne({GuildID: interaction.guild.id},{itirafChannel: null},{upsert:true});
-                interaction.reply({embeds:[new MessageEmbed().setTitle("İtiraf Kanalı Sıfırlandı!").setColor("RED").setDescription(`İtiraf kanalı kapatıldı! Artık sunucunuzda itirafların gideceği kanalı yok!`)]});
+
+            case "set-channel": {
+                const { confessionSystem } = await model.findOne({ GuildID: guild.id }) || {};
+                if (!confessionSystem) {
+                    return interaction.reply({
+                        content: "The Confession System is not active.",
+                        ephemeral: true
+                    });
+                }
+
+                const confessionChannel = interaction.options.getChannel("confession_channel");
+                await model.updateOne(
+                    { GuildID: interaction.guild.id },
+                    { confessionChannel: confessionChannel.id },
+                    { upsert: true }
+                );
+                interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setTitle("Confession Channel Set!")
+                            .setColor("GREEN")
+                            .setDescription(
+                                `The confession channel has been set to: <#${confessionChannel.id}>`
+                            )
+                    ]
+                });
+                break;
+            }
+
+            case "reset-channel": {
+                const { confessionSystem } = await model.findOne({ GuildID: guild.id }) || {};
+                if (!confessionSystem) {
+                    return interaction.reply({
+                        content: "The Confession System is not active.",
+                        ephemeral: true
+                    });
+                }
+
+                await model.updateOne(
+                    { GuildID: interaction.guild.id },
+                    { confessionChannel: null },
+                    { upsert: true }
+                );
+                interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setTitle("Confession Channel Reset!")
+                            .setColor("RED")
+                            .setDescription(
+                                "The confession channel has been reset. Your server no longer has a confession channel."
+                            )
+                    ]
+                });
                 break;
             }
         }
-
-
     }
-}
+};
