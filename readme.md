@@ -1,4 +1,4 @@
-# Discord Confession
+# 🌟 Star please <3
 
 - [Discord Confession](https://github.com/senotron/discord-confession)
   - The infrastructure is entirely created by senotron, which means it belongs to me.
