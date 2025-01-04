@@ -1,7 +1,7 @@
 {
-	"name": "gweepcreative",
+	"name": "senotron",
 	"version": "1.0.0",
-	"description": "Gweep Creative Gelişmiş Profil Botu",
+	"description": "DESN & Odunchu",
 	"main": "app.js",
 	"scripts": {
 		"start": "node app.js"
