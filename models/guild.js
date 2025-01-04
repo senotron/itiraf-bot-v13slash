@@ -5,8 +5,6 @@ const guildSh = new mongoose.Schema({
     itiraf: Boolean,
     itirafChannel: String,
     itirafadminChannel: String,
-
-
    });
    
    module.exports = mongoose.model("guild", guildSh);
