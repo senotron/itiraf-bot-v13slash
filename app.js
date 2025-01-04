@@ -1,70 +1,65 @@
 const fs = require("fs");
-const {Client, Intents, MessageActionRow,MessageButton,MessageEmbed,Collection, ModalBuilder, TextInputBuilder, TextInputStyle, InteractionType} = require("discord.js");
+const { Client, Intents, MessageActionRow, MessageButton, MessageEmbed, Collection, ModalBuilder, TextInputBuilder, TextInputStyle, InteractionType } = require("discord.js");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
-const dotenv = require("dotenv")
-dotenv.config({ path: "./.env" })
+const dotenv = require("dotenv");
+
+dotenv.config({ path: "./.env" });
+
 const client = new Client({
   fetchAllMembers: true,
-  intents:[
+  intents: [
     Intents.FLAGS.GUILDS,
     Intents.FLAGS.GUILD_MEMBERS,
     Intents.FLAGS.GUILD_MESSAGES,
     Intents.FLAGS.GUILD_BANS,
     Intents.FLAGS.GUILD_INTEGRATIONS,
     Intents.FLAGS.GUILD_VOICE_STATES,
-    Intents.FLAGS.GUILD_MESSAGE_REACTIONS
-
-    
-  ]});
-
-//const dotenv = require("dotenv")
-//dotenv.config({ path: "./.env" })
+    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+  ],
+});
 
 const mongoose = require("mongoose");
-mongoose.connect(process.env.mongoDB)
-.then(() => console.log('MongoDB bağlandı!'))
-.catch(err => console.log(err))
-
+mongoose
+  .connect(process.env.mongoDB)
+  .then(() => console.log("MongoDB connected!"))
+  .catch((err) => console.log(err));
 
 global.client = client;
 client.commands = (global.commands = []);
-fs.readdir("./letKomutlar/", (err, files) => {
-    if (err) throw err;
 
-    files.forEach((file) => {
-        if (!file.endsWith(".js")) return;
-        let props = require(`./letKomutlar/${file}`);
+fs.readdir("./letCommands/", (err, files) => {
+  if (err) throw err;
 
-        client.commands.push({
-             name: props.name.toLowerCase(),
-             description: props.description,
-             options: props.options,
-             category: props.category,
-          
-             
-        })
-        console.log(`Komut Yüklendi: ${props.name}`);
+  files.forEach((file) => {
+    if (!file.endsWith(".js")) return;
+    const props = require(`./letCommands/${file}`);
+
+    client.commands.push({
+      name: props.name.toLowerCase(),
+      description: props.description,
+      options: props.options,
+      category: props.category,
     });
-})
-;
-fs.readdir("./events/", (_err, files) => {
-    files.forEach((file) => {
-        if (!file.endsWith(".js")) return;
-        const event = require(`./events/${file}`);
-        let eventName = file.split(".")[0];
-        
-        console.log(`Event yüklendi: ${eventName}`);
-        client.on(eventName, (...args) => {
-           event(client, ...args);
-        });
-    });
+    console.log(`Command Loaded: ${props.name}`);
+  });
 });
 
+fs.readdir("./events/", (_err, files) => {
+  files.forEach((file) => {
+    if (!file.endsWith(".js")) return;
+    const event = require(`./events/${file}`);
+    const eventName = file.split(".")[0];
+
+    console.log(`Event Loaded: ${eventName}`);
+    client.on(eventName, (...args) => {
+      event(client, ...args);
+    });
+  });
+});
 
 client.on("ready", async () => {
-  
-    const rest = new REST({ version: "9" }).setToken(process.env.token);
+  const rest = new REST({ version: "9" }).setToken(process.env.token);
 
   try {
     await rest.put(Routes.applicationCommands(client.user.id), {
@@ -75,7 +70,4 @@ client.on("ready", async () => {
   }
 });
 
-
 client.login(process.env.token);
-
-
