@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
-const guildSh = new mongoose.Schema({
-    GuildID: String,
-    itiraf: Boolean,
-    itirafChannel: String,
-    itirafadminChannel: String,
-   });
-   
-   module.exports = mongoose.model("guild", guildSh);
+const guildSchema = new mongoose.Schema({
+  GuildID: String,
+  confessionSystem: Boolean,
+  confessionChannel: String,
+  confessionAdminChannel: String,
+});
+
+module.exports = mongoose.model("Guild", guildSchema);
